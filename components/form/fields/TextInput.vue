@@ -3,21 +3,25 @@
     <h3>{{ title }}</h3>
     <h4>{{ subtitle }}</h4>
     <input
-      :value="value"
+      v-model="value"
       :type="formType"
       @change="onValueChange"
       @blur="vuelidateInstance[objectKey].$touch"
     />
 
-    <div v-if="vuelidateInstance[objectKey]">
-      <p v-if="!vuelidateInstance[objectKey].required && vuelidateInstance[objectKey].$error">Error message here</p>
-    </div>
+    <ErrorMessages
+      :vuelidateInstance="vuelidateInstance"
+      :objectKey="objectKey"
+    />
   </div>
 </template>
 
 <script>
 export default {
   name: "TextInput",
+  components: {
+    ErrorMessages: () => import("../ErrorMessages.vue")
+  },
   props: [
     "title",
     "subtitle",
@@ -26,6 +30,14 @@ export default {
     "value",
     "vuelidateInstance"
   ],
+  watch: {
+    value(newValue, oldValue) {
+      this.$emit("onFormFieldValueChange", {
+        objectKey: this.objectKey,
+        value: newValue
+      });
+    },
+  },
   methods: {
     onValueChange(e) {
       this.$emit("onFormFieldValueChange", {

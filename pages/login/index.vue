@@ -2,18 +2,12 @@
   <div>
     <h1>Login Screen</h1>
 
-    <div v-for="(field, i) in schema.fields" :key="i">
-      <component
-        :is="field.component"
-        :title="field.name"
-        :formType="field.formType"
-        :objectKey="field.objectKey"
-        :options="field.options"
-        :value="loginForm[field.objectKey]"
-        @onFormFieldValueChange="onFormFieldValueChange"
-        :vuelidateInstance="$v"
-      />
-    </div>
+    <DynamicFormGenerator
+      :schema="schema"
+      :formValues="loginForm"
+      :vuelidateInstance="$v.loginForm"
+      @onFormFieldValueChange="onFormFieldValueChange"
+    />
 
     <p>{{ loginForm }}</p>
   </div>
@@ -21,11 +15,11 @@
 
 <script>
 import { gql } from "nuxt-graphql-request";
-import { required } from "vuelidate/lib/validators";
+import { initialiseVuelidateValidationObject } from "../../utils/vuelidateValidations";
 
 const FORM_SCHEMA_QUERY = gql`
   query formSchemaQuery($locale: SiteLocale) {
-    form(locale: $locale) {
+    form(locale: $locale, filter: {slug: {eq: "login_form"}}) {
       schema
     }
   }
@@ -34,8 +28,7 @@ const FORM_SCHEMA_QUERY = gql`
 export default {
   name: "Login",
   components: {
-    TextInput: () => import("../../components/form/TextInput.vue"),
-    SelectInput: () => import("../../components/form/SelectInput.vue")
+    DynamicFormGenerator: () => import("../../components/form/DynamicFormGenerator.vue")
   },
   async asyncData({ $graphql, params, store, app }) {
     const locale = app.$cookies.get("dato-locale");
@@ -57,26 +50,12 @@ export default {
     })
   },
   validations() {
-    // create validation object
-    const validationObject = {};
-    this.schema.fields.map(field => {
-      validationObject[field.objectKey] = {};
+    const validationObject = initialiseVuelidateValidationObject(this.schema);
 
-      if (field.validations.required) {
-        validationObject[field.objectKey] = {
-          required
-        }
-      }
-    })
-
-    return validationObject;
+    return {
+      loginForm: validationObject
+    };
   },
-  // data() {
-  //   return {
-  //     schema: {},
-  //     loginForm: {}
-  //   }
-  // },
   methods: {
     onFormFieldValueChange(e) {
       this.loginForm[e.objectKey] = e.value;
