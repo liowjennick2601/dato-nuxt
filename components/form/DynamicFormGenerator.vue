@@ -2,6 +2,10 @@
   <div>
     <div v-for="(field, i) in schema.fields" :key="i">
       <component
+        v-if="
+          !field.showIf ||
+          (field.showIf && field.showIf.equals) === formValues[field.showIf.objectKey] // change to array
+        "
         :is="field.component"
         :title="field.name"
         :formType="field.formType"
