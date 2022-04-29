@@ -30,6 +30,31 @@ export default {
   components: {
     DynamicFormGenerator: () => import("../../components/form/DynamicFormGenerator.vue")
   },
+  watch: {
+    loginForm: {
+      handler(form) {
+        // cross check login form value with schema fields dependant value
+        this.schema.fields.forEach(field => {
+          if (field.validations.dependants) {
+            field.validations.dependants.forEach(dependant => {
+              if (form[dependant.objectKey] === dependant.ifDependantValueEquals) {
+                this.loginForm[field.objectKey] = dependant.setFieldValue
+              };
+
+              if (form[dependant.objectKey] > dependant.ifDependantValueIsMoreThan) {
+                this.loginForm[field.objectKey] = dependant.setFieldValue
+              };
+
+              if (form[dependant.objectKey] < dependant.ifDependantValueIsLessThan) {
+                this.loginForm[field.objectKey] = dependant.setFieldValue
+              };
+            });
+          };
+        })
+      },
+      deep: true
+    }
+  },
   async asyncData({ $graphql, params, store, app }) {
     const locale = app.$cookies.get("dato-locale");
     const variables = {
@@ -40,7 +65,7 @@ export default {
 
     // populate initial form value
     const loginForm = {};
-    cmsSchemaData.fields.map(field => {
+    cmsSchemaData.fields.forEach(field => {
       loginForm[field.objectKey] = field.initialValue
     });
 

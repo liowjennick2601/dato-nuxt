@@ -67,13 +67,6 @@ export function initialiseVuelidateValidationObject(schema) {
         alphaNum
       }
     };
-
-    if (field.validations.alphaNum) {
-      validationObject[field.objectKey] = {
-        ...validationObject[field.objectKey],
-        alphaNum
-      }
-    };
   
     if (field.validations.numeric) {
       validationObject[field.objectKey] = {

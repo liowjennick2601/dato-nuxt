@@ -7,7 +7,7 @@
       @change="onValueChange"
       @blur="vuelidateInstance[objectKey].$touch"
     >
-      <option :key="i" v-for="(option, i) in options" :value="option.value">{{ option.label }}</option>
+      <option :key="i" v-for="(option, i) in options" :value="i">{{ option.label }}</option>
     </select>
 
     <ErrorMessages
@@ -33,9 +33,12 @@ export default {
   ],
   methods: {
     onValueChange(e) {
+      // cross check e.target.value (this is the index from the select input) with the list of options
+      // this is done because select input cannot return integer
+      const value = this.options[e.target.value].value;
       this.$emit("onFormFieldValueChange", {
         objectKey: this.objectKey,
-        value: e.target.value
+        value: value
       })
     }
   }

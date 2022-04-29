@@ -2,10 +2,7 @@
   <div>
     <div v-for="(field, i) in schema.fields" :key="i">
       <component
-        v-if="
-          !field.showIf ||
-          (field.showIf && field.showIf.equals) === formValues[field.showIf.objectKey] // change to array
-        "
+        v-if="checkShowFormCondition(field, formValues)"
         :is="field.component"
         :title="field.name"
         :formType="field.formType"
@@ -37,6 +34,23 @@
           objectKey: e.objectKey,
           value: e.value
         })
+      },
+      checkShowFormCondition(field, formValues) {
+        let showForm = false;
+
+        if (field.showIf) {
+          const conditionCheckResultsArray = [];
+
+          field.showIf.map(condition => {
+            const conditionCheckResult = formValues[condition.objectKey] === condition.equals;
+            conditionCheckResultsArray.push(conditionCheckResult);
+          });
+
+          showForm = conditionCheckResultsArray.every(result => result === true);
+        } else {
+          showForm = true;
+        };
+        return showForm;
       }
     }
   }
