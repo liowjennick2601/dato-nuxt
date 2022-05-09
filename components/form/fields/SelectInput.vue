@@ -36,6 +36,7 @@ export default {
       // cross check e.target.value (this is the index from the select input) with the list of options
       // this is done because select input cannot return integer
       const value = this.options[e.target.value].value;
+      console.log(value)
       this.$emit("onFormFieldValueChange", {
         objectKey: this.objectKey,
         value: value

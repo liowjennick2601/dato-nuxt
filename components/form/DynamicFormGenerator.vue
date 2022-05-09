@@ -26,7 +26,9 @@
     ],
     components: {
       TextInput: () => import("./fields/TextInput.vue"),
-      SelectInput: () => import("./fields/SelectInput.vue")
+      SelectInput: () => import("./fields/SelectInput.vue"),
+      Checkbox: () => import("./fields/Checkbox.vue"),
+      RadioInput: () => import("./fields/RadioInput.vue")
     },
     methods: {
       onFormFieldValueChange(e) {

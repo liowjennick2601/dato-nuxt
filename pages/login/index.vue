@@ -10,12 +10,14 @@
     />
 
     <p>{{ loginForm }}</p>
+    <p>{{ schema }}</p>
   </div>
 </template>
 
 <script>
 import { gql } from "nuxt-graphql-request";
 import { initialiseVuelidateValidationObject } from "../../utils/vuelidateValidations";
+import { API } from "../../api/axios";
 
 const FORM_SCHEMA_QUERY = gql`
   query formSchemaQuery($locale: SiteLocale) {
@@ -35,20 +37,22 @@ export default {
       handler(form) {
         // cross check login form value with schema fields dependant value
         this.schema.fields.forEach(field => {
-          if (field.validations.dependants) {
-            field.validations.dependants.forEach(dependant => {
-              if (form[dependant.objectKey] === dependant.ifDependantValueEquals) {
-                this.loginForm[field.objectKey] = dependant.setFieldValue
-              };
+          if (field.validations) {
+            if (field.validations.dependants) {
+              field.validations.dependants.forEach(dependant => {
+                if (form[dependant.objectKey] === dependant.ifDependantValueEquals) {
+                  this.loginForm[field.objectKey] = dependant.setFieldValue
+                };
 
-              if (form[dependant.objectKey] > dependant.ifDependantValueIsMoreThan) {
-                this.loginForm[field.objectKey] = dependant.setFieldValue
-              };
+                if (form[dependant.objectKey] > dependant.ifDependantValueIsMoreThan) {
+                  this.loginForm[field.objectKey] = dependant.setFieldValue
+                };
 
-              if (form[dependant.objectKey] < dependant.ifDependantValueIsLessThan) {
-                this.loginForm[field.objectKey] = dependant.setFieldValue
-              };
-            });
+                if (form[dependant.objectKey] < dependant.ifDependantValueIsLessThan) {
+                  this.loginForm[field.objectKey] = dependant.setFieldValue
+                };
+              });
+            };
           };
         })
       },
@@ -56,23 +60,49 @@ export default {
     }
   },
   async asyncData({ $graphql, params, store, app }) {
-    const locale = app.$cookies.get("dato-locale");
-    const variables = {
-      locale
+    try {
+      const locale = app.$cookies.get("dato-locale");
+      const variables = {
+        locale
+      };
+      let cmsQuery = await $graphql.default.request(FORM_SCHEMA_QUERY, variables);
+      let cmsSchemaData = cmsQuery.form.schema;
+
+      // populate initial form value
+      const loginForm = {};
+      const cmsSchemaObject = {
+        ...cmsSchemaData
+      };
+
+      for (let index = 0; index < cmsSchemaData.fields.length; index++) {
+        const fieldObject = cmsSchemaData.fields[index];
+        loginForm[fieldObject.objectKey] = fieldObject.initialValue;
+
+        // if option field has an api call
+        if (fieldObject.optionsAPI) {
+          const optionsResponse = await API.formDynamicOptions(fieldObject.optionsAPI.url);
+          const optionsData = optionsResponse.data.data;
+
+          const formattedOptionsArray = [];
+          optionsData.map((option, i) => {
+            const optionsObject = {
+              label: option[fieldObject.optionsAPI.labelKey],
+              value: option[fieldObject.optionsAPI.labelValue]
+            };
+            formattedOptionsArray.push(optionsObject);
+          });
+
+          cmsSchemaObject.fields[index].options = formattedOptionsArray;
+        };
+      };
+
+      return ({
+        schema: cmsSchemaObject,
+        loginForm: loginForm
+      })
+    } catch(err) {
+      console.log(err);
     };
-    const cmsQuery = await $graphql.default.request(FORM_SCHEMA_QUERY, variables);
-    const cmsSchemaData = cmsQuery.form.schema;
-
-    // populate initial form value
-    const loginForm = {};
-    cmsSchemaData.fields.forEach(field => {
-      loginForm[field.objectKey] = field.initialValue
-    });
-
-    return ({
-      schema: cmsSchemaData,
-      loginForm: loginForm
-    })
   },
   validations() {
     const validationObject = initialiseVuelidateValidationObject(this.schema);
