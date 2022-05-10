@@ -5,11 +5,10 @@
         v-if="checkShowFormCondition(field, formValues)"
         :is="field.component"
         :title="field.name"
-        :formType="field.formType"
         :objectKey="field.objectKey"
-        :options="field.options"
         :value="formValues[field.objectKey]"
         :vuelidateInstance="vuelidateInstance"
+        :config="field.config"
         @onFormFieldValueChange="onFormFieldValueChange"
       />
     </div>
@@ -28,7 +27,9 @@
       TextInput: () => import("./fields/TextInput.vue"),
       SelectInput: () => import("./fields/SelectInput.vue"),
       Checkbox: () => import("./fields/Checkbox.vue"),
-      RadioInput: () => import("./fields/RadioInput.vue")
+      RadioInput: () => import("./fields/RadioInput.vue"),
+      SliderInput: () => import("./fields/SliderInput.vue"),
+      FileUpload: () => import("./fields/FileUpload.vue")
     },
     methods: {
       onFormFieldValueChange(e) {

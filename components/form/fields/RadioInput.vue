@@ -4,7 +4,7 @@
     <h4>{{ subtitle }}</h4>
 
     <div>
-      <div :key="i" v-for="(option, i) in options">
+      <div :key="i" v-for="(option, i) in config.options">
         <h4>{{ option.label }}</h4>
         <input
           type="radio"
@@ -14,6 +14,10 @@
           @change="onValueChange"
         />
       </div>
+      <ErrorMessages
+        :vuelidateInstance="vuelidateInstance"
+        :objectKey="objectKey"
+      />
     </div>
   </div>
 </template>
@@ -28,13 +32,13 @@ export default {
     "title",
     "subtitle",
     "objectKey",
-    "options",
+    "config",
     "value",
     "vuelidateInstance"
   ],
   methods: {
     onValueChange(e) {
-      // const value = this.options[e.target.value].value;
+      // const value = this.config.options[e.target.value].value;
       this.$emit("onFormFieldValueChange", {
         objectKey: this.objectKey,
         value: e.target.value

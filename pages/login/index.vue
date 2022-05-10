@@ -79,20 +79,20 @@ export default {
         loginForm[fieldObject.objectKey] = fieldObject.initialValue;
 
         // if option field has an api call
-        if (fieldObject.optionsAPI) {
-          const optionsResponse = await API.formDynamicOptions(fieldObject.optionsAPI.url);
+        if (fieldObject.config && fieldObject.config.optionsAPI) {
+          const optionsResponse = await API.formDynamicOptions(fieldObject.config.optionsAPI.url);
           const optionsData = optionsResponse.data.data;
 
           const formattedOptionsArray = [];
           optionsData.map((option, i) => {
             const optionsObject = {
-              label: option[fieldObject.optionsAPI.labelKey],
-              value: option[fieldObject.optionsAPI.labelValue]
+              label: option[fieldObject.config.optionsAPI.labelKey],
+              value: option[fieldObject.config.optionsAPI.valueKey]
             };
             formattedOptionsArray.push(optionsObject);
           });
 
-          cmsSchemaObject.fields[index].options = formattedOptionsArray;
+          cmsSchemaObject.fields[index].config.options = formattedOptionsArray;
         };
       };
 

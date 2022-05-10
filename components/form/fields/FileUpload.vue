@@ -2,12 +2,16 @@
   <div>
     <h3>{{ title }}</h3>
     <h4>{{ subtitle }}</h4>
-    <input
-      v-model="value"
-      :type="config.formType"
-      @change="onValueChange"
-      @blur="vuelidateInstance[objectKey].$touch"
-    />
+
+    <div>
+      <input
+        type="file"
+        :id="objectKey"
+        :name="objectKey"
+        :accept="config.acceptedFileType"
+        @change="onValueChange"
+      />
+    </div>
 
     <ErrorMessages
       :vuelidateInstance="vuelidateInstance"
@@ -18,7 +22,7 @@
 
 <script>
 export default {
-  name: "TextInput",
+  name: "FileUpload",
   components: {
     ErrorMessages: () => import("../ErrorMessages.vue")
   },
@@ -27,23 +31,16 @@ export default {
     "subtitle",
     "objectKey",
     "value",
-    "config",
-    "vuelidateInstance"
+    "vuelidateInstance",
+    "config"
   ],
-  watch: {
-    value(newValue, oldValue) {
-      this.$emit("onFormFieldValueChange", {
-        objectKey: this.objectKey,
-        value: newValue
-      });
-    },
-  },
   methods: {
     onValueChange(e) {
+      // const value = this.config.options[e.target.value].value;
       this.$emit("onFormFieldValueChange", {
         objectKey: this.objectKey,
         value: e.target.value
-      });
+      })
     }
   }
 }

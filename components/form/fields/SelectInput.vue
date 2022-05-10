@@ -3,11 +3,12 @@
     <h3>{{ title }}</h3>
     <h4>{{ subtitle }}</h4>
     <select
-      :value="value"
+      :value="currentSelectionValue"
+      v-model="currentSelectionValue"
       @change="onValueChange"
       @blur="vuelidateInstance[objectKey].$touch"
     >
-      <option :key="i" v-for="(option, i) in options" :value="i">{{ option.label }}</option>
+      <option :key="i" v-for="(option, i) in config.options" :value="option.value">{{ option.label }}</option>
     </select>
 
     <ErrorMessages
@@ -23,23 +24,24 @@ export default {
   components: {
     ErrorMessages: () => import("../ErrorMessages.vue")
   },
+  data() {
+    return {
+      currentSelectionValue: this.value
+    }
+  },
   props: [
     "title",
     "subtitle",
     "objectKey",
-    "options",
+    "config",
     "value",
     "vuelidateInstance"
   ],
   methods: {
-    onValueChange(e) {
-      // cross check e.target.value (this is the index from the select input) with the list of options
-      // this is done because select input cannot return integer
-      const value = this.options[e.target.value].value;
-      console.log(value)
+    onValueChange() {
       this.$emit("onFormFieldValueChange", {
         objectKey: this.objectKey,
-        value: value
+        value: this.currentSelectionValue
       })
     }
   }
