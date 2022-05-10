@@ -111,7 +111,20 @@ export function initialiseVuelidateValidationObject(schema) {
         }
       };
     };
+
+    // if this is a multiform
+    if (field.config && field.config.fields && field.config.fields.length > 0) {
+      const nestedValidationObject = initialiseVuelidateValidationObject(field.config);
+      validationObject[field.objectKey] = {
+        $each: {
+          ...validationObject[field.objectKey],
+          ...nestedValidationObject
+        }
+      }
+    }
   })
+
+  console.log(validationObject)
 
   return validationObject;
 }

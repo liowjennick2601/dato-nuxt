@@ -29,7 +29,8 @@
       Checkbox: () => import("./fields/Checkbox.vue"),
       RadioInput: () => import("./fields/RadioInput.vue"),
       SliderInput: () => import("./fields/SliderInput.vue"),
-      FileUpload: () => import("./fields/FileUpload.vue")
+      FileUpload: () => import("./fields/FileUpload.vue"),
+      MultiForm: () => import("./fields/MultiForm.vue")
     },
     methods: {
       onFormFieldValueChange(e) {

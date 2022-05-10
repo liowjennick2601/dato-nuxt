@@ -10,7 +10,6 @@
     />
 
     <p>{{ loginForm }}</p>
-    <p>{{ schema }}</p>
   </div>
 </template>
 
