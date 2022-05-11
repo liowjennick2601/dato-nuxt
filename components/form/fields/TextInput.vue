@@ -3,7 +3,7 @@
     <h3>{{ title }}</h3>
     <h4>{{ subtitle }}</h4>
     <input
-      v-model="value"
+      v-model="vuelidateInstance[objectKey].$model"
       :type="config.formType"
       @change="onValueChange"
       @blur="vuelidateInstance[objectKey].$touch"
@@ -28,22 +28,26 @@ export default {
     "objectKey",
     "value",
     "config",
-    "vuelidateInstance"
+    "vuelidateInstance",
   ],
   watch: {
-    value(newValue, oldValue) {
-      this.$emit("onFormFieldValueChange", {
-        objectKey: this.objectKey,
-        value: newValue
-      });
-    },
+    // value(newValue, oldValue) {
+    //   this.$emit("onFormFieldValueChange", {
+    //     objectKey: this.objectKey,
+    //     value: newValue
+    //   });
+    // },
   },
   methods: {
     onValueChange(e) {
-      this.$emit("onFormFieldValueChange", {
-        objectKey: this.objectKey,
-        value: e.target.value
-      });
+      // const eventObject = {
+      //   objectKey: this.objectKey,
+      //   value: e.target.value
+      // };
+
+      // this.$emit("onFormFieldValueChange", 
+      //   eventObject
+      // );
     }
   }
 }

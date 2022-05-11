@@ -2,12 +2,14 @@
   <div>
     <h1>Login Screen</h1>
 
-    <DynamicFormGenerator
-      :schema="schema"
-      :formValues="loginForm"
-      :vuelidateInstance="$v.loginForm"
-      @onFormFieldValueChange="onFormFieldValueChange"
-    />
+    <div>
+      <DynamicFormGenerator
+        :schema="schema"
+        :formValues="loginForm"
+        :vuelidateInstance="$v.loginForm"
+        @onFormFieldValueChange="onFormFieldValueChange"
+      />
+    </div>
 
     <p>{{ loginForm }}</p>
   </div>
@@ -73,25 +75,51 @@ export default {
         ...cmsSchemaData
       };
 
-      for (let index = 0; index < cmsSchemaData.fields.length; index++) {
-        const fieldObject = cmsSchemaData.fields[index];
-        loginForm[fieldObject.objectKey] = fieldObject.initialValue;
+      if (cmsSchemaData.fields) {
+        for (let index = 0; index < cmsSchemaData.fields.length; index++) {
+          const fieldObject = cmsSchemaData.fields[index];
+          loginForm[fieldObject.objectKey] = fieldObject.initialValue;
 
-        // if option field has an api call
-        if (fieldObject.config && fieldObject.config.optionsAPI) {
-          const optionsResponse = await API.formDynamicOptions(fieldObject.config.optionsAPI.url);
-          const optionsData = optionsResponse.data.data;
+          // if option field has an api call
+          if (fieldObject.config && fieldObject.config.optionsAPI) {
+            const optionsResponse = await API.formDynamicOptions(fieldObject.config.optionsAPI.url);
+            const optionsData = optionsResponse.data.data;
 
-          const formattedOptionsArray = [];
-          optionsData.map((option, i) => {
-            const optionsObject = {
-              label: option[fieldObject.config.optionsAPI.labelKey],
-              value: option[fieldObject.config.optionsAPI.valueKey]
+            const formattedOptionsArray = [];
+            optionsData.map((option, i) => {
+              const optionsObject = {
+                label: option[fieldObject.config.optionsAPI.labelKey],
+                value: option[fieldObject.config.optionsAPI.valueKey]
+              };
+              formattedOptionsArray.push(optionsObject);
+            });
+
+            cmsSchemaObject.fields[index].config.options = formattedOptionsArray;
+          };
+
+          // NESTED
+          // check if component is multiform
+          if (fieldObject.component === "MultiForm" && fieldObject.config.fields.length > 0) {
+            for (let nestedIndex = 0; nestedIndex < fieldObject.config.fields.length; nestedIndex++) {
+              const nestedFieldObject = fieldObject.config.fields[nestedIndex];
+              if (nestedFieldObject.config && nestedFieldObject.config.optionsAPI) {
+                const nestedOptionsResponse = await API.formDynamicOptions(nestedFieldObject.config.optionsAPI.url);
+                const nestedOptionsData = nestedOptionsResponse.data.data;
+
+                const nestedFormattedOptionsArray = [];
+                nestedOptionsData.map((option, i) => {
+                  const optionsObject = {
+                    label: option[nestedFieldObject.config.optionsAPI.labelKey],
+                    value: option[nestedFieldObject.config.optionsAPI.valueKey]
+                  };
+                  nestedFormattedOptionsArray.push(optionsObject);
+                });
+
+                nestedFieldObject.fields[nestedIndex].config.options = nestedFormattedOptionsArray;
+                console.log(nestedFormattedOptionsArray)
+              };
             };
-            formattedOptionsArray.push(optionsObject);
-          });
-
-          cmsSchemaObject.fields[index].config.options = formattedOptionsArray;
+          }
         };
       };
 

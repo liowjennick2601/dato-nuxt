@@ -1,10 +1,10 @@
 <template>
   <div>
-    <div :key="i" v-for="(form, i) in value">
+    <div :key="i" v-for="(form, i) in vuelidateInstance[objectKey].$each.$iter">
       <DynamicFormGenerator
         :schema="config"
         :formValues="value[i]"
-        :vuelidateInstance="vuelidateInstance[i]"
+        :vuelidateInstance="vuelidateInstance[objectKey].$each[i]"
         @onFormFieldValueChange="onFormFieldValueChange"
       />
     </div>
@@ -23,7 +23,8 @@ export default {
   props: [
     "config",
     "vuelidateInstance",
-    "value"
+    "value",
+    "objectKey"
   ],
   components: {
     DynamicFormGenerator: () => import("../DynamicFormGenerator.vue")
@@ -35,12 +36,16 @@ export default {
         dataStructureObject[field.objectKey] = field.initialValue;
       });
 
-      this.value.push(dataStructureObject);
+      const newValue = this.value;
+      newValue.push(dataStructureObject);
 
       this.$emit("onFormFieldValueChange", {
         objectKey: this.objectKey,
-        value: this.value
+        value: newValue
       })
+    },
+    onFormFieldValueChange() {
+
     }
   }
 }
