@@ -10,8 +10,6 @@
         @onFormFieldValueChange="onFormFieldValueChange"
       />
     </div>
-
-    <p>{{ loginForm }}</p>
   </div>
 </template>
 
@@ -19,6 +17,14 @@
 import { gql } from "nuxt-graphql-request";
 import { initialiseVuelidateValidationObject } from "../../utils/vuelidateValidations";
 import { API } from "../../api/axios";
+
+const FORM_SCHEMA_QUERY = gql`
+  query formSchemaQuery($locale: SiteLocale) {
+    form(locale: $locale, filter: {slug: {eq: "login_form"}}) {
+      schema
+    }
+  }
+`
 
 export default {
   name: "Login",
@@ -54,17 +60,8 @@ export default {
   },
   async asyncData({ $graphql, params, store, app }) {
     try {
-      const FORM_SCHEMA_QUERY = gql`
-        query formSchemaQuery($locale: SiteLocale, $formSlug: String) {
-          form(locale: $locale, filter: {slug: {eq: $formSlug}}) {
-            schema
-          }
-        }
-      `
-
       const locale = app.$cookies.get("dato-locale");
       const variables = {
-        formSlug: "login_form",
         locale
       };
       let cmsQuery = await $graphql.default.request(FORM_SCHEMA_QUERY, variables);
@@ -103,12 +100,11 @@ export default {
           if (fieldObject.component === "MultiForm" && fieldObject.config && fieldObject.config.fields.length > 0) {
             for (let nestedIndex = 0; nestedIndex < fieldObject.config.fields.length; nestedIndex++) {
               const nestedFieldObject = fieldObject.config.fields[nestedIndex];
-              console.log(nestedFieldObject)
+
               if (nestedFieldObject.config && nestedFieldObject.config.optionsAPI) {
                 const nestedOptionsResponse = await API.formDynamicOptions(nestedFieldObject.config.optionsAPI.url);
                 const nestedOptionsData = nestedOptionsResponse.data.data;
 
-                console.log(nestedOptionsData)
 
                 const nestedFormattedOptionsArray = [];
 
@@ -121,12 +117,13 @@ export default {
                 });
 
                 nestedFieldObject.config.options = nestedFormattedOptionsArray;
-                console.log(nestedFormattedOptionsArray)
               };
             };
           }
         };
       };
+
+      console.log(cmsSchemaObject)
 
       return ({
         schema: cmsSchemaObject,

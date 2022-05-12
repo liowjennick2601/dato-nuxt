@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="schema && formValues">
     <div v-for="(field, i) in schema.fields" :key="i">
       <component
         v-if="checkShowFormCondition(field, formValues)"
