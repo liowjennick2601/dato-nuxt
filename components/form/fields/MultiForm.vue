@@ -44,8 +44,11 @@ export default {
         value: newValue
       })
     },
-    onFormFieldValueChange() {
-
+    onFormFieldValueChange(e) {
+      this.$emit("onFormFieldValueChange", {
+        objectKey: e.objectKey,
+        value: e.value
+      })
     }
   }
 }

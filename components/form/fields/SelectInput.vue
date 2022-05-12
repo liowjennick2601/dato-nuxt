@@ -3,9 +3,7 @@
     <h3>{{ title }}</h3>
     <h4>{{ subtitle }}</h4>
     <select
-      :value="currentSelectionValue"
-      v-model="currentSelectionValue"
-      @change="onValueChange"
+      v-model="vuelidateInstance[objectKey].$model"
       @blur="vuelidateInstance[objectKey].$touch"
     >
       <option :key="i" v-for="(option, i) in config.options" :value="option.value">{{ option.label }}</option>

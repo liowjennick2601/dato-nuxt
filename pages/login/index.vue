@@ -20,14 +20,6 @@ import { gql } from "nuxt-graphql-request";
 import { initialiseVuelidateValidationObject } from "../../utils/vuelidateValidations";
 import { API } from "../../api/axios";
 
-const FORM_SCHEMA_QUERY = gql`
-  query formSchemaQuery($locale: SiteLocale) {
-    form(locale: $locale, filter: {slug: {eq: "login_form"}}) {
-      schema
-    }
-  }
-`
-
 export default {
   name: "Login",
   components: {
@@ -62,8 +54,17 @@ export default {
   },
   async asyncData({ $graphql, params, store, app }) {
     try {
+      const FORM_SCHEMA_QUERY = gql`
+        query formSchemaQuery($locale: SiteLocale, $formSlug: String) {
+          form(locale: $locale, filter: {slug: {eq: $formSlug}}) {
+            schema
+          }
+        }
+      `
+
       const locale = app.$cookies.get("dato-locale");
       const variables = {
+        formSlug: "login_form",
         locale
       };
       let cmsQuery = await $graphql.default.request(FORM_SCHEMA_QUERY, variables);
@@ -99,14 +100,18 @@ export default {
 
           // NESTED
           // check if component is multiform
-          if (fieldObject.component === "MultiForm" && fieldObject.config.fields.length > 0) {
+          if (fieldObject.component === "MultiForm" && fieldObject.config && fieldObject.config.fields.length > 0) {
             for (let nestedIndex = 0; nestedIndex < fieldObject.config.fields.length; nestedIndex++) {
               const nestedFieldObject = fieldObject.config.fields[nestedIndex];
+              console.log(nestedFieldObject)
               if (nestedFieldObject.config && nestedFieldObject.config.optionsAPI) {
                 const nestedOptionsResponse = await API.formDynamicOptions(nestedFieldObject.config.optionsAPI.url);
                 const nestedOptionsData = nestedOptionsResponse.data.data;
 
+                console.log(nestedOptionsData)
+
                 const nestedFormattedOptionsArray = [];
+
                 nestedOptionsData.map((option, i) => {
                   const optionsObject = {
                     label: option[nestedFieldObject.config.optionsAPI.labelKey],
@@ -115,7 +120,7 @@ export default {
                   nestedFormattedOptionsArray.push(optionsObject);
                 });
 
-                nestedFieldObject.fields[nestedIndex].config.options = nestedFormattedOptionsArray;
+                nestedFieldObject.config.options = nestedFormattedOptionsArray;
                 console.log(nestedFormattedOptionsArray)
               };
             };
