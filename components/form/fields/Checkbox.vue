@@ -17,6 +17,8 @@
       </div>
     </div>
 
+    <p>{{ checkbox_answers }}</p>
+
     <ErrorMessages
       :vuelidateInstance="vuelidateInstance"
       :objectKey="objectKey"
@@ -45,10 +47,7 @@ export default {
   ],
   methods: {
     onValueChange() {
-      this.$emit("onFormFieldValueChange", {
-        objectKey: this.objectKey,
-        value: this.checkbox_answers
-      })
+      this.vuelidateInstance[this.objectKey].$model = this.checkbox_answers;
     }
   }
 }

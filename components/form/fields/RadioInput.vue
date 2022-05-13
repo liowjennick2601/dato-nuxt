@@ -11,7 +11,7 @@
           :id="option.id"
           :name="objectKey"
           :value="option.value"
-          @change="onValueChange"
+          v-model="vuelidateInstance[objectKey].$model"
         />
       </div>
       <ErrorMessages
@@ -35,15 +35,6 @@ export default {
     "config",
     "value",
     "vuelidateInstance"
-  ],
-  methods: {
-    onValueChange(e) {
-      // const value = this.config.options[e.target.value].value;
-      this.$emit("onFormFieldValueChange", {
-        objectKey: this.objectKey,
-        value: e.target.value
-      })
-    }
-  }
+  ]
 }
 </script>

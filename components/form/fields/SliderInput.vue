@@ -6,7 +6,7 @@
     <no-ssr>
       <div>
         <vue-slider
-          @change="onValueChange"
+          v-model="vuelidateInstance[objectKey].$model"
           :value="value"
           :interval="config.interval"
           :min="config.minValue"
@@ -42,14 +42,6 @@ export default {
     "value",
     "vuelidateInstance",
     "config"
-  ],
-  methods: {
-    onValueChange(newValue) {
-      this.$emit("onFormFieldValueChange", {
-        objectKey: this.objectKey,
-        value: newValue
-      })
-    }
-  }
+  ]
 }
 </script>

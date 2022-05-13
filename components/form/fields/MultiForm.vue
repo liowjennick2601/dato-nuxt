@@ -9,8 +9,6 @@
       />
     </div>
 
-    <p>{{ vuelidateInstance }}</p>
-
     <div @click="addForm">Add Button</div>
   </div>
 </template>

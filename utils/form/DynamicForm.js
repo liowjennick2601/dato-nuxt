@@ -25,6 +25,11 @@ export async function generateFormSchema(formSlug, locale, gqlSSR) {
     }
   `
 
+  const variables = {
+    formSlug,
+    locale
+  };
+
   let cmsQuery = await gqlSSR.default.request(FORM_SCHEMA_QUERY, variables);
   let cmsSchemaData = cmsQuery.form.schema;
   
@@ -86,7 +91,7 @@ export async function generateFormSchema(formSlug, locale, gqlSSR) {
   };
 
   return {
-    formValue: formValueObject,
+    formValues: formValueObject,
     schema: cmsSchemaObject
   };
 };
@@ -205,4 +210,32 @@ export function initialiseVuelidateValidationObject(schema) {
   };
 
   return validationObject;
-}
+};
+
+export function conditionalFormDisplay(schema, form) {
+  const formValues = {
+    ...form
+  };
+  // cross check login form value with schema fields dependant value
+  schema.fields.forEach(field => {
+    if (field.validations) {
+      if (field.validations.dependants) {
+        field.validations.dependants.forEach(dependant => {
+          if (formValues[dependant.objectKey] === dependant.ifDependantValueEquals) {
+            formValues[field.objectKey] = dependant.setFieldValue
+          };
+
+          if (formValues[dependant.objectKey] > dependant.ifDependantValueIsMoreThan) {
+            formValues[field.objectKey] = dependant.setFieldValue
+          };
+
+          if (formValues[dependant.objectKey] < dependant.ifDependantValueIsLessThan) {
+            formValues[field.objectKey] = dependant.setFieldValue
+          };
+        });
+      };
+    };
+  })
+
+  console.log(formValues);
+};

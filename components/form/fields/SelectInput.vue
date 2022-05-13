@@ -34,14 +34,6 @@ export default {
     "config",
     "value",
     "vuelidateInstance"
-  ],
-  methods: {
-    onValueChange() {
-      this.$emit("onFormFieldValueChange", {
-        objectKey: this.objectKey,
-        value: this.currentSelectionValue
-      })
-    }
-  }
+  ]
 }
 </script>
