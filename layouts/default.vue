@@ -10,7 +10,7 @@
     <h2>Locale</h2>
     <h3>Current Locale: {{ currentLocale }}</h3>
     <h3 @click="changeLocale('en')">EN</h3>
-    <h3 @click="changeLocale('ms_MY')">MY</h3>
+    <h3 @click="changeLocale('ms-MY')">MY</h3>
   </div>
   <Nuxt />
 </div>

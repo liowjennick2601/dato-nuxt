@@ -2,10 +2,9 @@
   <div>
     <div v-if="articles">
       <div v-for="(article, i) in articles" :key="i">
-        <h2>{{ article.title }}</h2>
-        <h3>{{ article.subtitle }}</h3>
-        <p>{{ article.paragraph }}</p>
-        <nuxtLink :to="'/articles/' + article.tags">Read article</nuxtLink>
+        <h2>{{ article.attributes.title }}</h2>
+        <h3>{{ article.attributes.subtitle }}</h3>
+        <nuxtLink :to="'/articles/' + article.attributes.slug">Read article</nuxtLink>
       </div>
     </div>
   </div>
@@ -15,13 +14,15 @@
 import { gql } from "nuxt-graphql-request";
 
 const ALL_ARTICLES_QUERY = gql`
-  query allArticlesQuery($locale: SiteLocale) {
-    allArticles(locale: $locale) {
-      id
-      title
-      subtitle
-      paragraph,
-      tags
+  query articlesQuery($locale: I18NLocaleCode) {
+    articles(locale: $locale) {
+      data {
+        attributes {
+          title
+          subtitle
+          slug
+        }
+      }
     }
   }
 `
@@ -42,7 +43,10 @@ export default {
         locale
       }
       const cmsQuery = await $graphql.default.request(ALL_ARTICLES_QUERY, variables);
-      const cmsData = cmsQuery.allArticles;
+
+      const cmsData = cmsQuery.articles.data;
+
+      console.log(cmsData)
 
       return ({
         articles: cmsData

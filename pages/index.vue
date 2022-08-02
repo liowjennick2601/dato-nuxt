@@ -1,7 +1,6 @@
 <template>
   <div v-if="cmsContent">
-    <p>{{ cmsContent.pageName }}</p>
-    <p>{{ cmsContent.headerDescription }}</p>
+    <p>{{ cmsContent.title }}</p>
   </div>
 </template>
 
@@ -9,14 +8,13 @@
 import { gql } from "nuxt-graphql-request";
 
 const HOMEPAGE_QUERY = gql`
-  query homepageQuery {
-    page(filter: {pageName: {eq: "Homepage"}}, locale: ms_MY) {
-      pageName
-      headerRightImage {
-        url
+  query homepageQuery($locale: I18NLocaleCode) {
+    homepage(locale: $locale) {
+      data {
+        attributes {
+          title
+        }
       }
-      headerDescription
-      headerTitle
     }
   }
 `
@@ -28,13 +26,17 @@ export default {
       cmsContent: null
     }
   },
-  async asyncData({ $graphql, params }) {
+  async asyncData({ $graphql, app }) {
     try {
-      const cmsQuery = await $graphql.default.request(HOMEPAGE_QUERY);
-      const cmsData = cmsQuery.page;
+      const locale = app.$cookies.get("dato-locale");
+      const variables = {
+        locale
+      };
+      const cmsQuery = await $graphql.default.request(HOMEPAGE_QUERY, variables);
+      const cmsContent = cmsQuery.homepage.data.attributes;
 
       return ({
-        cmsContent: cmsData
+        cmsContent: cmsContent
       })
     } catch(err) {
       console.log(err);
@@ -42,11 +44,11 @@ export default {
   },
   head() {
     return {
-      title: this.cmsContent.pageName,
+      title: this.cmsContent.title,
       meta: [
-        { hid: "description", property: "description", content: this.cmsContent.headerTitle }
+        { hid: "description", property: "description", content: "" }
       ]
     }
-  }
+  },
 }
 </script>

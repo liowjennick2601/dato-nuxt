@@ -42,8 +42,14 @@ export default {
     // https://go.nuxtjs.dev/content
     '@nuxt/content',
     '@nuxtjs/i18n',
-    'cookie-universal-nuxt'
+    'cookie-universal-nuxt',
+    '@nuxtjs/strapi'
   ],
+
+  strapi: {
+    entities: ['homepage'],
+    url: 'http://localhost:1337'
+  },
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
@@ -74,14 +80,14 @@ export default {
         /**
          * The client endpoint url
          */
-        endpoint: 'https://graphql.datocms.com/',
+        endpoint: process.env.VUE_APP_STRAPI_GRAPHQL_URL,
         /**
          * Per-client options overrides
          * See: https://github.com/prisma-labs/graphql-request#passing-more-options-to-fetch
          */
         options: {
           headers: {
-            authorization: `Bearer ${process.env.VUE_APP_CMS_DATOCMS_API_TOKEN}`
+            authorization: `Bearer ${process.env.VUE_APP_STRAPI_API_TOKEN}`
           }
         }
       }

@@ -1,8 +1,7 @@
 <template>
   <div v-if="articleContent">
-    <h2>{{ articleContent.title }}</h2>
-    <h3>{{ articleContent.subtitle }}</h3>
-    <p>{{ articleContent.paragraph }}</p>
+    <h2>{{ articleContent.attributes.title }}</h2>
+    <h3>{{ articleContent.attributes.subtitle }}</h3>
   </div>
 </template>
 
@@ -10,13 +9,14 @@
 import { gql } from "nuxt-graphql-request";
 
 const ARTICLE_QUERY = gql`
-  query articleQuery($locale: SiteLocale, $slug: String) {
-    article(locale: $locale, filter: {tags: {eq: $slug}}) {
-      title
-      subtitle
-      paragraph
-      id
-      tags
+  query articleQuery($locale: I18NLocaleCode, $slug: String) {
+    articles(locale: $locale, filters: {slug: {eq: $slug}}) {
+      data {
+        attributes {
+          title
+          subtitle
+        }
+      }
     }
   }
 `
@@ -36,7 +36,8 @@ export default {
         slug: params.slug
       };
       const cmsQuery = await $graphql.default.request(ARTICLE_QUERY, variables)
-      const cmsData = cmsQuery.article;
+      console.log(cmsQuery)
+      const cmsData = cmsQuery.articles.data[0];
 
       return ({
         articleContent: cmsData
