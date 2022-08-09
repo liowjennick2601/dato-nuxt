@@ -4,7 +4,7 @@
       <div class="container">
         <div class="content-container">
           <h1 class="section-header"><span class="text-blue">Homegrown Insurer</span> Protecting Singapore for over 45 Years</h1>
-          <p class="mb-6">When you’ve been protecting customers and businesses for more than 45 years, you learn a thing or two about what matters. Our insurance products are made to help Singaporeans protect what matters!</p>
+          <p class="mb-6">When you've been protecting customers and businesses for more than 45 years, you learn a thing or two about what matters. Our insurance products are made to help Singaporeans protect what matters!</p>
           <NuxtLink to="/" class="blue-button-filled">Browse Product</NuxtLink>
         </div>
 
@@ -15,7 +15,7 @@
     <div id="product-section" class="section">
       <div class="container">
         <h5 class="text-yellow text-center section-title mb-0">OUR PRODUCTS</h5>
-        <h2 class="section-header text-center">We select only the <span class="text-blue">best policies for you.</span></h2>
+        <h2 class="section-header text-center mt-2 mb-5">We select only the <span class="text-blue">best policies for you.</span></h2>
 
         <div class="product-cards-container">
           <template v-for="i in 2">
@@ -29,16 +29,67 @@
               />
             </div>
           </template>
+        </div>
+      </div>
+    </div>
 
-          <div class="product-card-container">
-            <ProductCard
-              :imageSource="require('../assets/images/products/private-car.png')"
-              title="Private Car"
-              description="Protect your car, passengers, and the planet jskdjksjd jksjskjd ksjdksj kjsdkjk sjdksjdkj sjkdjsk skjdksj sdjkjsdk sjdkjds k"
-              link="/"
-              buttonText="Get Quote"
-            />
+    <div id="carousel-section" class="section">
+      <div class="carousel-container">
+
+        <img class="left-arrow" @click="previousCarouselItem" src="../assets/images/icons/carousel-left-arrow.png" />
+        <img class="right-arrow" @click="nextCarouselItem" src="../assets/images/icons/carousel-right-arrow.png" />
+
+        <div class="carousel-items" :style="{ transform: `translateX(calc(${carouselCurrentIndex} *  -100%))` }">
+          <div class="carousel-item">
+            <div class="container">
+              <ImageContentRow />
+            </div>
           </div>
+          <div class="carousel-item">
+            <div class="container">
+              <ImageContentRow />
+            </div>
+          </div>
+          <div class="carousel-item">
+            <div class="container">
+              <ImageContentRow />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="activity-indicator-container mt-4">
+        <div class="activity-indicator active" />
+        <div class="activity-indicator" />
+        <div class="activity-indicator" />
+      </div>
+
+    </div>
+
+    <!-- TODO REVIEW SECTION AND CAROUSEL -->
+
+    <RecordsSection
+      point1Header="3 days"
+      point1Description="Average Claims Disbursement"
+      point2Header="1975"
+      point2Description="Year of Incorporation"
+      point3Header="99%"
+      point3Description="Claims Approval Rate"
+    />
+
+    <ContactUsSection />
+
+    <div id="learn-more-section" class="section">
+      <div class="container">
+        <div class="left-container">
+          <img src="../assets/images/icons/shield.png" />
+          <p>ECICS Insurance is regulated by the Monetary Authority of Singapore (MAS)</p>
+        </div>
+
+        <div class="right-container">
+          <NuxtLink to="/">
+            Learn More
+          </NuxtLink>
         </div>
       </div>
     </div>
@@ -63,11 +114,15 @@ const HOMEPAGE_QUERY = gql`
 export default {
   name: 'IndexPage',
   components: {
-    ProductCard: () => import("../components/snippet/ProductCard.vue")
+    ProductCard: () => import("../components/snippet/ProductCard.vue"),
+    ImageContentRow: () => import("../components/snippet/ImageContentRow.vue"),
+    RecordsSection: () => import("../components/sections/RecordsSection.vue"),
+    ContactUsSection: () => import("../components/sections/ContactUsSection.vue")
   },
   data() {
     return {
-      cmsContent: null
+      cmsContent: null,
+      carouselCurrentIndex: 0
     }
   },
   async asyncData({ $graphql, app }) {
@@ -94,6 +149,14 @@ export default {
       // ]
     }
   },
+  methods: {
+    previousCarouselItem() {
+      this.carouselCurrentIndex -= 1
+    },
+    nextCarouselItem() {
+      this.carouselCurrentIndex += 1
+    }
+  }
 }
 </script>
 
@@ -120,4 +183,61 @@ export default {
         display: flex
         justify-content: center
         flex: 1
+
+.carousel-container
+  overflow: hidden
+  position: relative
+  .left-arrow
+    position: absolute
+    left: 0
+    top: 50%
+    transform: translateY(-50%)
+    cursor: pointer
+    z-index: 1
+  .right-arrow
+    position: absolute
+    right: 0
+    top: 50%
+    transform: translateY(-50%)
+    cursor: pointer
+    z-index: 1
+  .carousel-items
+    display: flex
+    transition: 0.2s transform
+    .carousel-item
+      flex: 1 0 100%
+      .container
+        padding: 0 160px
+
+.activity-indicator-container
+  display: flex
+  justify-content: center
+  .activity-indicator
+    width: 12px
+    height: 12px
+    border: 2px solid #8B8C8E
+    border-radius: 50%
+    margin: 0 4px
+    &.active
+      border: 2px solid $primary-blue
+      background-color: $primary-blue
+      cursor: pointer
+
+#learn-more-section
+  background-color: $primary-blue
+  color: white
+  padding-top: 20px
+  padding-bottom: 20px
+  .container
+    display: flex
+    align-items: center
+    .left-container
+      display: flex
+      flex: 1
+      img
+        padding-right: 20px
+    .right-container
+      a
+        font-family: $font-family-default
+        font-weight: 900
 </style>

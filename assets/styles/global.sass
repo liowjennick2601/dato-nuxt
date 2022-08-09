@@ -1,9 +1,7 @@
-$primary-blue: #00ADEF
-$primary-yellow: #FFB531
-$font-family-header: 'Poppins'
-$font-family-default: 'Open Sans'
-$spacing-units: 8px
-$mobile-spacing-units: 4px
+@import './modules/variables.sass'
+@import './modules/margin-and-padding'
+@import './modules/button.sass'
+@import './modules/text.sass'
 
 body
   margin: 0
@@ -13,10 +11,6 @@ a
   cursor: pointer
   color: unset
 
-p
-  margin-bottom: 0
-  font-family: $font-family-default
-
 .container
   max-width: 1400px
   display: block
@@ -24,61 +18,9 @@ p
   padding-left: 20px
   padding-right: 20px
 
-.blue-button-filled
-  background-color: $primary-blue
-  cursor: pointer
-  border-radius: 8px
-  padding: 10px 20px
-  color: white
-  font-family: $font-family-default
-  &:hover
-    box-shadow: 0px 1px 10px 1px rgb(46 61 73 / 20%) !important
-
-h1
-  &.section-header
-    font-family: $font-family-header
-    font-weight: 900
-    font-size: 45px
-h2
-  &.section-header
-    font-family: $font-family-header
-    font-weight: 900
-    font-size: 38px
-    margin-top: $spacing-units * 2
-    margin-bottom: $spacing-units * 5
-h5
-  &.section-title
-    font-family: $font-family-default
-    font-size: 20px
-
-.text-blue
-  color: $primary-blue
-.text-yellow
-  color: $primary-yellow
-
-.text-center
-  text-align: center
-
 .section
   padding-top: $spacing-units * 6
   padding-bottom: $spacing-units * 6
 
-@for $i from 0 through 10
-  .mt-#{$i}
-    margin-top: $spacing-units * $i
-  .mr-#{$i}
-    margin-right: $spacing-units * $i
-  .mb-#{$i}
-    margin-bottom: $spacing-units * $i
-  .ml-#{$i}
-    margin-left: $spacing-units * $i
-  .pt-#{$i}
-    padding-top: $spacing-units * $i
-  .pr-#{$i}
-    padding-right: $spacing-units * $i
-  .pb-#{$i}
-    padding-bottom: $spacing-units * $i
-  .pl-#{$i}
-    padding-left: $spacing-units * $i
 
 

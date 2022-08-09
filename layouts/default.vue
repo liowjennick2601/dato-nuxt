@@ -1,20 +1,9 @@
 <template>
-<div>
   <div>
     <Navbar />
-    <!-- <h2>Navigation</h2>
-    <NuxtLink to="/">Home</NuxtLink>
-    <NuxtLink to="/articles">All Articles</NuxtLink> -->
+    <Nuxt />
+    <Footer />
   </div>
-
-  <!-- <div>
-    <h2>Locale</h2>
-    <h3>Current Locale: {{ currentLocale }}</h3>
-    <h3 @click="changeLocale('en')">EN</h3>
-    <h3 @click="changeLocale('ms-MY')">MY</h3>
-  </div> -->
-  <Nuxt />
-</div>
 </template>
 
 <script>
@@ -24,7 +13,8 @@ export default {
   name: "Default",
   scrollToTop: true,
   components: {
-    Navbar: () => import('../components/Navbar')
+    Navbar: () => import('../components/sections/Navbar'),
+    Footer: () => import('../components/sections/Footer')
   },
   middleware: ["locale"],
   computed: {

@@ -2,7 +2,7 @@
   <div id="navbar" class="container">
     <div class="navbar-content">
       <div class="logo-container">
-        <img class="logo" src="../assets/images/logo/ecics-logo.png" />
+        <img class="logo" src="../../assets/images/logo/ecics-logo.png" />
       </div>
 
       <div class="nav-items-container">
@@ -30,7 +30,7 @@
 </script>
 
 <style lang="sass">
-@import '../assets/styles/global.sass'
+@import '../../assets/styles/global.sass'
 
 #navbar
   font-family: 'Open Sans'
