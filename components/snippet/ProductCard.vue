@@ -30,7 +30,7 @@ export default {
 
 .product-card
   border: 2px solid $primary-blue
-  padding: $spacing-units * 3
+  padding: $spacing-units * 4
   border-radius: 6px
   width: 70%
   box-shadow: 0px 1px 10px 1px rgb(46 61 73 / 20%) !important
@@ -45,6 +45,7 @@ export default {
     h4
       font-family: $font-family-header
       margin-bottom: $spacing-units * 1
+      margin-top: $spacing-units * 2
       font-size: 26px
       font-weight: 900
     p

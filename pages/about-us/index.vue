@@ -8,7 +8,7 @@
 
         <template v-slot:content>
           <h5 class="text-yellow section-title mb-2 mt-0">OUR PRODUCTS</h5>
-          <h2 class="section-header mb-0">Always protecting you <span class="text-blue">on-the-go</span></h2>
+          <h2 class="section-header mb-2">Always protecting you <span class="text-blue">on-the-go</span></h2>
           <p>We are a homegrown insurer that empathizes better with the needs of our customers and business partners and we've been around the block ar couple of times.</p>
         </template>
       </ImageContentRow>
@@ -47,7 +47,7 @@
 
           <template v-slot:content>
             <h5 class="text-yellow section-title mb-2 mt-0">OUR PRODUCTS</h5>
-            <h2 class="section-header mb-0">Always protecting you <span class="text-blue">on-the-go</span></h2>
+            <h2 class="section-header mb-2">Always protecting you <span class="text-blue">on-the-go</span></h2>
             <p>We are a homegrown insurer that empathizes better with the needs of our customers and business partners and we've been around the block ar couple of times.</p>
           </template>
         </ImageContentRow>
@@ -100,25 +100,26 @@
 
     <div id="corporate-information-section" class="section">
       <div class="container">
-        <div class="item">
+        <NuxtLink to="/financial-information" class="item">
           <img src="../../assets/images/background/notes.png">
           <div class="content-row">
             <p class="text-header text-size-regular text-white">Financial Information</p>
             <font-awesome-icon icon="chevron-right" class="text-white text-size-regular" />
           </div>
-        </div>
+        </NuxtLink>
 
-        <div class="item">
+        <NuxtLink to="/" class="item">
           <img src="../../assets/images/background/building.png">
           <div class="content-row">
             <p class="text-header text-size-regular text-white">Corporate Governance</p>
             <font-awesome-icon icon="chevron-right" class="text-white text-size-regular" />
           </div>
-        </div>
+        </NuxtLink>
       </div>
     </div>
 
     <ContactUsSection />
+    <FooterBannerSection />
   </div>
 </template>
 
@@ -128,7 +129,8 @@
     components: {
       ImageContentRow: () => import("../../components/snippet/ImageContentRow.vue"),
       ProductCard: () => import("../../components/snippet/ProductCard.vue"),
-      ContactUsSection: () => import("../../components/sections/ContactUsSection.vue")
+      ContactUsSection: () => import("../../components/sections/ContactUsSection.vue"),
+      FooterBannerSection: () => import("../../components/sections/FooterBannerSection.vue")
     }
   }
 </script>
@@ -154,7 +156,7 @@
       color: #D9D9D9
       position: absolute
       left: -25px
-      top: -60px
+      top: -40px
       font-weight: 900
       &.active
         color: $primary-blue
@@ -169,7 +171,7 @@
       border: 3px solid #D9D9D9
       background-color: #D9D9D9
       position: absolute
-      top: -6.5px
+      top: -3.5px
       left: -10px
       &.active-fill
         background-color: $primary-blue
@@ -178,7 +180,7 @@
         border: 3px solid $primary-blue
         background-color: white
       &.last
-        top: -6.5px
+        top: -3.5px
         right: 0px
         left: unset
 
@@ -212,6 +214,5 @@
         width: calc(100% - 50px)
         p
           flex: 1
-          margin-top: 0
-          margin-bottom: 0
+          font-weight: 900
 </style>

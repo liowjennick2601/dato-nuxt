@@ -57,7 +57,7 @@ export default {
     .title-container
       flex: 1
     .contact-us-details-container
-      flex: 2
+      flex: 3
       .contact-us-card
         display: flex
         border-radius: 8px
@@ -84,7 +84,7 @@ export default {
             font-size: 18px
             padding-right: 20px
         .white-button-outline
-          width: 120px
+          width: 160px
           h5
             font-family: $font-family-default
             margin-bottom: 0
