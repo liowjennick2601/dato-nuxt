@@ -36,7 +36,7 @@
       <div class="column">
         <h4>Join our newsletter!</h4>
         <div class="newsletter-form-container">
-          <input type="text" />
+          <input type="email" placeholder="example@email.com" />
           <div class="subscribe-button">Subscribe</div>
         </div>
       </div>

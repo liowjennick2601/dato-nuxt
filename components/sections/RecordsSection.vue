@@ -38,7 +38,7 @@ export default {
 
 #records-section
   background-image: url(../../assets/images/background/bg-darren-nunis.png)
-  background-size: 100%
+  background-size: 100% 100%
   .container
     display: flex
     padding-top: 120px

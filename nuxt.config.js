@@ -1,3 +1,5 @@
+import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
+
 export default {
   // Target: https://go.nuxtjs.dev/config-target
   target: 'static',
@@ -30,7 +32,49 @@ export default {
 
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
   buildModules: [
-    'nuxt-graphql-request'
+    'nuxt-graphql-request',
+    ['@nuxtjs/fontawesome', {
+      component: 'FontAwesome',
+      suffix: true,
+      icons: {
+        solid: [
+          'faUserSecret',
+          'faExclamationCircle',
+          'faExclamationTriangle',
+          'faChevronRight',
+          'faStar',
+          'faPen',
+          'faClock',
+          'faCalendarAlt',
+          'faTimes',
+          'faTimesCircle',
+          'faChevronLeft',
+          'faChevronCircleLeft',
+          'faArrowLeft',
+          'faUserCircle',
+          'faUserAlt',
+          'faCheckSquare',
+          'faArrowRight',
+          'faLock',
+          'faChevronDown',
+          'faChevronUp',
+          'faCopy',
+          'faPlus',
+          'faBan',
+          'faUpload',
+          'faCopyright',
+          'faMobileAlt',
+          'faBars',
+          'faInfoCircle',
+          'faCheck',
+          'faCheckCircle',
+          'faDownload',
+          'faTrash',
+          'faHeart'
+        ],
+        brands: ['faFacebookF', 'faLinkedinIn', 'faGoogle', 'faApple']
+      }
+    }]
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules

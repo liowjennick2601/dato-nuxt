@@ -1,23 +1,22 @@
 <template>
-  <div class="image-content-row">
+  <div class="image-content-row" :class="{ 'reverse': reverse }">
     <div class="image-container">
-      <img src="../../assets/images/stock-images/family-inside-car.png" />
+      <slot name="image" />
     </div>
 
     <div class="content-container">
-      <!-- <slot name="content"></slot> -->
-      <h2 class="section-header mb-0">Always protecting you <span class="text-blue">on-the-go</span></h2>
-      <p>We are a homegrown insurer that empathizes better with the needs of our customers and business partners and we've been around the block ar couple of times.</p>
-      <div class="button-container mt-4">
-        <NuxtLink class="blue-button-filled" to="/">
-          More about Motor Insurance
-        </NuxtLink>
-      </div>
+      <slot name="content" />
     </div>
   </div>
 </template>
 
 <script>
+export default {
+  name: 'ImageContent',
+  props: {
+    reverse: Boolean
+  }
+}
 </script>
 
 <style lang="sass">
@@ -35,4 +34,9 @@
   .content-container
     flex: 1
     padding-left: 20px
+  &.reverse
+    flex-direction: row-reverse
+    .content-container
+      padding-left: 0
+      padding-right: 20px
 </style>

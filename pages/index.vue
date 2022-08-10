@@ -40,7 +40,26 @@
         <img class="right-arrow" @click="nextCarouselItem" src="../assets/images/icons/carousel-right-arrow.png" />
 
         <div class="carousel-items" :style="{ transform: `translateX(calc(${carouselCurrentIndex} *  -100%))` }">
-          <div class="carousel-item">
+          <div class="carousel-item" v-for="i in 3" :key="i">
+            <div class="container">
+              <ImageContentRow>
+                <template v-slot:image>
+                  <img src="../assets/images/stock-images/family-inside-car.png" />
+                </template>
+
+                <template v-slot:content>
+                  <h2 class="section-header mb-0">Always protecting you <span class="text-blue">on-the-go</span></h2>
+                  <p>We are a homegrown insurer that empathizes better with the needs of our customers and business partners and we've been around the block ar couple of times.</p>
+                  <div class="button-container mt-4">
+                    <NuxtLink class="blue-button-filled" to="/">
+                      More about Motor Insurance
+                    </NuxtLink>
+                  </div>
+                </template>
+              </ImageContentRow>
+            </div>
+          </div>
+          <!-- <div class="carousel-item">
             <div class="container">
               <ImageContentRow />
             </div>
@@ -49,12 +68,7 @@
             <div class="container">
               <ImageContentRow />
             </div>
-          </div>
-          <div class="carousel-item">
-            <div class="container">
-              <ImageContentRow />
-            </div>
-          </div>
+          </div> -->
         </div>
       </div>
 

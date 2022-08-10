@@ -10,7 +10,7 @@
           <NuxtLink to="/products">Products</NuxtLink>
         </div>
         <div class="nav-item">
-          <NuxtLink to="/products">About Us</NuxtLink>
+          <NuxtLink to="/about-us">About Us</NuxtLink>
         </div>
         <div class="nav-item">
           <NuxtLink to="/claims">Claims</NuxtLink>
@@ -36,6 +36,8 @@
   font-family: 'Open Sans'
   font-size: 20px
   font-weight: 600
+  padding-top: 20px
+  padding-bottom: 20px
   .navbar-content
     display: flex
     align-items: center

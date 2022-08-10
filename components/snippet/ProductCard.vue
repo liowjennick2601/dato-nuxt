@@ -5,7 +5,7 @@
       <h4 class="text-center">{{ title }}</h4>
       <p class="text-center mb-4">{{ description }}</p>
     </div>
-    <div class="cta-button-container">
+    <div class="cta-button-container" v-if="link && buttonText">
       <NuxtLink :to="link" class="cta-button-blue">
         {{ buttonText }}
       </NuxtLink>
